@@ -1,6 +1,5 @@
 const { MongoClient } = require('mongodb');
 
-// Step 1: Create driver data
 const drivers = [
   {
     name: "John Doe",
@@ -16,7 +15,7 @@ const drivers = [
   },
 ];
 
-// Step 2: Add an additional driver
+// ✅ Task 2 - Step 2: Add a new driver
 drivers.push({
   name: "Nantha Kumar",
   vehicleType: "Hatchback",
@@ -24,7 +23,7 @@ drivers.push({
   rating: 4.7,
 });
 
-// Step 3: Show all drivers' names
+// ✅ Task 2 - Step 1: Display all driver names
 console.log("Driver Names:");
 drivers.forEach(driver => {
   console.log(driver.name);
@@ -36,20 +35,25 @@ async function main() {
 
   try {
     await client.connect();
-    console.log("Connected to MongoDB!");
+    console.log("✅ Connected to MongoDB!");
 
-    const db = client.db("testDB");
-    const collection = db.collection("drivers");
+    const db = client.db("testDB"); // You can rename the DB if needed
+    const collection = db.collection("drivers"); // Store drivers in "drivers" collection
 
-    // Insert all drivers into MongoDB
+    // 🧹 Optional: Clear old data (for testing)
+    await collection.deleteMany({});
+
+    // 🚀 Insert the driver array
     await collection.insertMany(drivers);
-    console.log("Drivers inserted!");
+    console.log("🚗 Driver data inserted!");
 
-    // Query and display all drivers from the database
+    // 📦 Find and display all drivers in the DB
     const allDrivers = await collection.find().toArray();
-    console.log("All Drivers in DB:", allDrivers);
+    console.log("📋 All Drivers from MongoDB:");
+    console.log(allDrivers);
+
   } catch (err) {
-    console.error("Error:", err);
+    console.error("❌ Error:", err);
   } finally {
     await client.close();
   }
