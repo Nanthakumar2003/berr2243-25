@@ -56,4 +56,18 @@ app.post('/rides', async (req, res) => {
       res.status(400).json({ error: "Invalid ride ID or data" });
     }
   });
-    
+  app.delete('/rides/:id', async (req, res) => {
+    try {
+      const result = await db.collection('rides').deleteOne({
+        _id: new ObjectId(req.params.id)
+      });
+  
+      if (result.deletedCount === 0) {
+        return res.status(404).json({ error: "Ride not found" });
+      }
+      res.status(200).json({ deleted: result.deletedCount });
+    } catch (err) {
+      res.status(400).json({ error: "Invalid ride ID" });
+    }
+  });
+  
