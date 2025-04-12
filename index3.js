@@ -33,3 +33,12 @@ app.get('/rides', async (req, res) => {
         res.status(500).json({ error: "Failed to fetch rides" });
     }
 });
+app.post('/rides', async (req, res) => {
+    try {
+      const result = await db.collection('rides').insertOne(req.body);
+      res.status(201).json({ id: result.insertedId });
+    } catch (err) {
+      res.status(400).json({ error: "Invalid ride data" });
+    }
+  });
+  
